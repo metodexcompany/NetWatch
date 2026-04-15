@@ -1,0 +1,26 @@
+<!-- Open this in browser, right-click canvas -> Save as PNG, then convert to .ico at https://convertico.com -->
+<canvas id="c" width="256" height="256"></canvas>
+<script>
+const c=document.getElementById('c'),ctx=c.getContext('2d');
+// background circle
+ctx.beginPath();ctx.arc(128,128,120,0,Math.PI*2);
+const g=ctx.createRadialGradient(128,90,20,128,128,120);
+g.addColorStop(0,'#1a3a5c');g.addColorStop(1,'#0b1120');
+ctx.fillStyle=g;ctx.fill();
+ctx.strokeStyle='#7eb8f7';ctx.lineWidth=4;ctx.stroke();
+// shield
+ctx.beginPath();ctx.moveTo(128,40);ctx.lineTo(200,80);ctx.lineTo(195,160);
+ctx.quadraticCurveTo(128,220,128,220);ctx.quadraticCurveTo(128,220,61,160);
+ctx.lineTo(56,80);ctx.closePath();
+ctx.fillStyle='#7eb8f715';ctx.fill();ctx.strokeStyle='#7eb8f7';ctx.lineWidth=3;ctx.stroke();
+// eye
+ctx.beginPath();ctx.ellipse(128,125,40,22,0,0,Math.PI*2);
+ctx.strokeStyle='#34d058';ctx.lineWidth=3;ctx.stroke();
+ctx.beginPath();ctx.arc(128,125,12,0,Math.PI*2);
+ctx.fillStyle='#34d058';ctx.fill();
+ctx.beginPath();ctx.arc(128,125,5,0,Math.PI*2);
+ctx.fillStyle='#0b1120';ctx.fill();
+// N W text
+ctx.fillStyle='#7eb8f7';ctx.font='bold 24px Segoe UI';ctx.textAlign='center';
+ctx.fillText('NW',128,195);
+</script>

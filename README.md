@@ -22,7 +22,7 @@ NetWatch — монитор сетевых соединений для Windows. 
 ## Установка
 
 ### Установщик
-Скачайте `NetWatch_Setup_1.0.0.exe` из [Releases](../../releases) и запустите.
+Скачайте `NetWatch_Setup_1.1.0.exe` из [Releases](../../releases) и запустите.
 
 ### Из исходников
 ```bash

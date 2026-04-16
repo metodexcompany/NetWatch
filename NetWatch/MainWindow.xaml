@@ -75,6 +75,55 @@
                 </Grid>
             </Border>
 
+            <!-- ═══ Плашка обновления ═══ -->
+            <Border x:Name="UpdateBar" Grid.Row="1" VerticalAlignment="Top" Panel.ZIndex="50"
+                    Background="#1a3a1a" Height="36" Visibility="Collapsed">
+                <Grid Margin="20,0">
+                    <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
+                        <TextBlock Text="🔄 Доступна новая версия" FontSize="12" Foreground="#34D058" VerticalAlignment="Center"/>
+                        <TextBlock x:Name="UpdateVersionText" Text="" FontSize="12" FontWeight="Bold"
+                                   Foreground="#34D058" Margin="6,0" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <Button Content="Скачать" HorizontalAlignment="Right" Style="{StaticResource UnbanBtn}"
+                            Click="DownloadUpdate_Click" Padding="14,4"/>
+                </Grid>
+            </Border>
+
+            <!-- ═══ Экран первого запуска ═══ -->
+            <Border x:Name="ScanScreen" Grid.Row="1" Panel.ZIndex="200"
+                    Background="{StaticResource BgDarkBrush}" CornerRadius="0,0,14,14">
+                <Grid>
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="500">
+                        <!-- Shield icon -->
+                        <Border Width="100" Height="100" CornerRadius="50" Background="#7EB8F715"
+                                HorizontalAlignment="Center" Margin="0,0,0,30">
+                            <TextBlock Text="🛡" FontSize="48" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </Border>
+
+                        <TextBlock Text="NETWATCH" FontSize="28" FontWeight="Bold" Foreground="{StaticResource AccentBrush}"
+                                   HorizontalAlignment="Center" Margin="0,0,0,8"/>
+                        <TextBlock Text="Сканирование сетевых подключений..." FontSize="14"
+                                   Foreground="{StaticResource TextSecondaryBrush}" HorizontalAlignment="Center"
+                                   Margin="0,0,0,30"/>
+
+                        <!-- Animated progress -->
+                        <ProgressBar x:Name="ScanProgress" IsIndeterminate="True" Height="3" Width="300"
+                                     Foreground="{StaticResource AccentBrush}" Background="#1E2D3D" BorderThickness="0"
+                                     HorizontalAlignment="Center" Margin="0,0,0,30"/>
+
+                        <!-- Results (shown after scan) -->
+                        <StackPanel x:Name="ScanResults" Visibility="Collapsed" HorizontalAlignment="Center">
+                            <TextBlock x:Name="ScanResultText" FontSize="16" Foreground="{StaticResource TextPrimaryBrush}"
+                                       HorizontalAlignment="Center" TextAlignment="Center" LineHeight="28"/>
+                            <Button Content="Перейти к мониторингу →" Click="CloseScanScreen_Click"
+                                    Style="{StaticResource RoundBtn}" Background="#1f6feb" Foreground="White"
+                                    BorderBrush="#3a8aff" FontSize="14" Padding="24,10"
+                                    HorizontalAlignment="Center" Margin="0,30,0,0"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Grid>
+            </Border>
+
             <!-- ═══ Панель алертов ═══ -->
             <Border x:Name="AlertPanel" Grid.Row="1" Visibility="Collapsed" Panel.ZIndex="100"
                     Background="#E00B1120" CornerRadius="0,0,14,14">

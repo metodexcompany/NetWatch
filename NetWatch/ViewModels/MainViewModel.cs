@@ -26,6 +26,8 @@ public class MainViewModel : INotifyPropertyChanged
     private readonly DispatcherTimer _timer;
     private readonly BandwidthTracker _bwTracker = new();
     private readonly HashSet<string> _alertSeen = new();
+    private NotificationService? _notifications;
+    private bool _firstScanDone;
 
     public ObservableCollection<ProcessGroup> Processes { get; } = new();
     public ObservableCollection<ConnectionInfo> AllConnections { get; } = new();
@@ -90,6 +92,23 @@ public class MainViewModel : INotifyPropertyChanged
         set { _intervalSeconds = value; OnPropertyChanged(); }
     }
 
+    // First scan screen
+    private bool _showScanScreen = true;
+    public bool ShowScanScreen { get => _showScanScreen; set { _showScanScreen = value; OnPropertyChanged(); } }
+
+    private string _scanStatus = "Сканирование сети...";
+    public string ScanStatus { get => _scanStatus; set { _scanStatus = value; OnPropertyChanged(); } }
+
+    // Update
+    private bool _updateAvailable;
+    public bool UpdateAvailable { get => _updateAvailable; set { _updateAvailable = value; OnPropertyChanged(); } }
+
+    private string _updateVersion = "";
+    public string UpdateVersion { get => _updateVersion; set { _updateVersion = value; OnPropertyChanged(); } }
+
+    private string _updateUrl = "";
+    public string UpdateUrl { get => _updateUrl; set { _updateUrl = value; OnPropertyChanged(); } }
+
     public event Action? NewAlert;
     public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -106,6 +125,18 @@ public class MainViewModel : INotifyPropertyChanged
         _intervalSeconds = settings.IntervalSeconds;
 
         Task.Run(() => GeoIPService.ResolveSelfIPs());
+
+        // Check for updates
+        Task.Run(async () =>
+        {
+            var update = await UpdateService.CheckAsync();
+            if (update.Available)
+            {
+                UpdateAvailable = true;
+                UpdateVersion = update.LatestVersion;
+                UpdateUrl = update.DownloadUrl;
+            }
+        });
 
         _timer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(_intervalSeconds) };
         _timer.Tick += (_, _) => Refresh();
@@ -220,9 +251,25 @@ public class MainViewModel : INotifyPropertyChanged
                 });
                 if (Alerts.Count > 100) Alerts.RemoveAt(Alerts.Count - 1);
                 NewAlert?.Invoke();
+
+                // Windows toast notification
+                _notifications?.ShowAlert("NetWatch — Угроза",
+                    $"{c.ProcessName} → {c.RemoteIP}:{c.RemotePort}\n{reason}");
             }
         }
         AlertCount = Alerts.Count;
+
+        // Update tray tooltip
+        _notifications?.UpdateTooltip(rawConns.Count, rawConns.Count(c => c.Risk == RiskLevel.Suspicious));
+
+        // First scan done — show results
+        if (!_firstScanDone)
+        {
+            _firstScanDone = true;
+            ScanStatus = $"Найдено: {rawConns.Count} подключений\n" +
+                         $"Процессов: {groups.Count}\n" +
+                         $"Подозрительных: {rawConns.Count(c => c.Risk == RiskLevel.Suspicious)}";
+        }
 
         // Bandwidth
         _bwTracker.Sample();
@@ -297,6 +344,8 @@ public class MainViewModel : INotifyPropertyChanged
         RefreshBlocked();
         Refresh();
     }
+
+    public void SetNotificationService(NotificationService svc) => _notifications = svc;
 
     public void DismissAlerts()
     {

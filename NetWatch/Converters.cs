@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 using NetWatch.Models;
+using Color = System.Windows.Media.Color;
 
 namespace NetWatch;
 

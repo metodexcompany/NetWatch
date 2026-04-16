@@ -1,12 +1,12 @@
 [Setup]
 AppName=NetWatch
-AppVersion=1.0.0
+AppVersion=1.1.0
 AppPublisher=NetWatch Security
 AppPublisherURL=https://netwatch.app
 DefaultDirName={autopf}\NetWatch
 DefaultGroupName=NetWatch
 OutputDir=D:\Prog\NetSnitch\installer_output
-OutputBaseFilename=NetWatch_Setup_1.0.0
+OutputBaseFilename=NetWatch_Setup_1.1.0
 SetupIconFile=D:\Prog\NetSnitch\NetWatch\Assets\netwatch.ico
 UninstallDisplayIcon={app}\NetWatch.exe
 Compression=lzma2/ultra64
@@ -22,7 +22,7 @@ ArchitecturesInstallIn64BitMode=x64compatible
 Name: "russian"; MessagesFile: "compiler:Languages\Russian.isl"
 
 [Files]
-Source: "D:\Prog\NetSnitch\v5\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
+Source: "D:\Prog\NetSnitch\v8\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs
 
 [Icons]
 Name: "{group}\NetWatch"; Filename: "{app}\NetWatch.exe"; IconFilename: "{app}\netwatch.ico"
